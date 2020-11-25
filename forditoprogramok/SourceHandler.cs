@@ -146,6 +146,7 @@ namespace forditoprogramok
          */
         public void replaceContent()
         {
+            content = content.ToLower();
             //var blockComments = @"/\*(.*?)\*/";
             //var blockComments = @"^/[/|*](.+)$";
             //var lineComments = @"//(.*?)\r?\n";

@@ -13,16 +13,16 @@
 ; ,;
  =,=
 = ,=
-IF, 10 
-ELSE, 11 
+if, 10 
+else, 11 
 |, 12 
 &, 13 
 ||, 14 
 &&, 15 
-FOR, 20 
-WHILE, 21 
-SWITCH, 30 
-CASE, 31 
+for, 20 
+while, 21 
+switch, 30 
+case, 31 
 (, 40 
 ), 41 
 ==, 50 
