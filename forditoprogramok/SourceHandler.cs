@@ -128,7 +128,7 @@ namespace forditoprogramok
                 StreamReader SR = new StreamReader(File.OpenRead(dictionaryPath));
                 while ((line = SR.ReadLine()) != null)
                 {
-                    string[] words = line.Split('~');
+                    string[] words = line.Split(',');
                     replacesDictionary.Add(words[0], words[1]);
                 }
                 SR.Close();
