@@ -1,4 +1,0 @@
-
-
-
-IF (a ==  VAR[ CONST[2] ] ) {b= VAR[ CONST[6] ] }

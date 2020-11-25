@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0EC0C928-D2A2-4E8F-BE5F-2F254256BB7C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Dictionary.txt = Dictionary.txt
 		forditoprogramok\bin\FileToWrite.txt = forditoprogramok\bin\FileToWrite.txt
 		forditoprogramok\bin\FinalCode.txt = forditoprogramok\bin\FinalCode.txt
 	EndProjectSection

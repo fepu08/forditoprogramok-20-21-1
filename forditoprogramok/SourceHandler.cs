@@ -27,9 +27,9 @@ namespace forditoprogramok
          */
 
         // eredetileg path1, és path2 néven lettek megírva órán
-        private string filePathToRead, filePathToWrite = "";   // file nevek tárolására
+        private string filePathToRead, filePathToWrite, dictionaryPath = "";   // file nevek tárolására
         private string content = "";  // a beolvasott file tartalmát tároljuk
-        private Dictionary<string, string> replaces = new Dictionary<string, string>();
+        private Dictionary<string, string> replacesDictionary = new Dictionary<string, string>();
         private List<string> symbolTable = new List<string>();
         private int symbolIndex = 0;
         public string FilePathToRead 
@@ -79,10 +79,12 @@ namespace forditoprogramok
             }
         }
 
-        public SourceHandler(string filePathToRead, string filePathToWrite)
+        public SourceHandler(string filePathToRead, string filePathToWrite, string dictionaryPath)
         {
             this.filePathToRead = filePathToRead;
             this.filePathToWrite = filePathToWrite;
+            this.dictionaryPath = dictionaryPath;
+            this.readDictionary();
         }
 
         public bool openFileToRead()
@@ -118,6 +120,27 @@ namespace forditoprogramok
             return true;
         }
 
+        private void readDictionary()
+        {
+            try
+            {
+                string line = "";
+                StreamReader SR = new StreamReader(File.OpenRead(dictionaryPath));
+                while ((line = SR.ReadLine()) != null)
+                {
+                    string[] words = line.Split('~');
+                    replacesDictionary.Add(words[0], words[1]);
+                }
+                SR.Close();
+            }
+            catch (Exception IOE)
+            {
+                Console.WriteLine(IOE.Message);
+            }
+
+        }
+
+
         /** replaceContent(s)
          * A megfelelő módon majd felülírjuk a content változó tartalmát
          */
@@ -139,7 +162,7 @@ namespace forditoprogramok
             content = Regex.Replace(content, patternNumber, changeVariablesAndConstants("$1"));
             content = Regex.Replace(content, patternVar, changeVariablesAndConstants("$1"));
 
-            foreach (var x in replaces)
+            foreach (var x in replacesDictionary)
             {
                 while (content.Contains(x.Key))
                 {
@@ -178,49 +201,49 @@ namespace forditoprogramok
             //content = Replace(content, @"[a-zA-Z0-9]", "VARIABLE");
             //content = Regex.Replace(content, @"[0-9]", "CONST");
             //TODO: betenni egy fileba és soronként feldolgozni
-            replaces.Add("  ", " ");
-            replaces.Add("\n", " ");
-            replaces.Add("    ", " ");
-            replaces.Add(" {", "{");
-            replaces.Add(" }", "}");
-            replaces.Add("} ", "}");
-            replaces.Add("{ ", "{");
-            replaces.Add(" (", "(");
-            replaces.Add("( ", "(");
-            replaces.Add(" )", ")");
-            replaces.Add(") ", ")");
-            replaces.Add(" ;", ";");
-            replaces.Add("; ", ";");
-            replaces.Add(" =", "=");
-            replaces.Add("= ", "=");
-            replaces.Add("if", " 10 ");
-            replaces.Add("else", " 11 ");
-            replaces.Add("for", " 20 ");
-            replaces.Add("while", " 21 ");
-            replaces.Add("switch", " 30 ");
-            replaces.Add("case", " 31 ");
-            replaces.Add("(", " 40 ");
-            replaces.Add(")", " 41 ");
-            replaces.Add("==", " 50 ");
-            replaces.Add(">", " 51 ");
-            replaces.Add(">=", " 52 ");
-            replaces.Add("<", " 53 ");
-            replaces.Add("<=", " 54 ");
-            replaces.Add("{", " 60 ");
-            replaces.Add("}", " 61 ");
-            replaces.Add("=", " 70 ");
-            replaces.Add("+", " 71 ");
-            replaces.Add("++", " 72 ");
-            replaces.Add("-", " 73 ");
-            replaces.Add("--", " 74 ");
-            replaces.Add("-=", " 75 ");
-            replaces.Add("+=", " 76 ");
-            replaces.Add("true", " 80 ");
-            replaces.Add("false", " 81 ");
-            foreach (KeyValuePair<string, string> kvp in replaces)
-            {
-                replaceText(kvp.Key, kvp.Value);
-            }
+            //replacesDictionary.Add("  ", " ");
+            //replacesDictionary.Add("\n", " ");
+            //replacesDictionary.Add("    ", " ");
+            //replacesDictionary.Add(" {", "{");
+            //replacesDictionary.Add(" }", "}");
+            //replacesDictionary.Add("} ", "}");
+            //replacesDictionary.Add("{ ", "{");
+            //replacesDictionary.Add(" (", "(");
+            //replacesDictionary.Add("( ", "(");
+            //replacesDictionary.Add(" )", ")");
+            //replacesDictionary.Add(") ", ")");
+            //replacesDictionary.Add(" ;", ";");
+            //replacesDictionary.Add("; ", ";");
+            //replacesDictionary.Add(" =", "=");
+            //replacesDictionary.Add("= ", "=");
+            //replacesDictionary.Add("if", " 10 ");
+            //replacesDictionary.Add("else", " 11 ");
+            //replacesDictionary.Add("for", " 20 ");
+            //replacesDictionary.Add("while", " 21 ");
+            //replacesDictionary.Add("switch", " 30 ");
+            //replacesDictionary.Add("case", " 31 ");
+            //replacesDictionary.Add("(", " 40 ");
+            //replacesDictionary.Add(")", " 41 ");
+            //replacesDictionary.Add("==", " 50 ");
+            //replacesDictionary.Add(">", " 51 ");
+            //replacesDictionary.Add(">=", " 52 ");
+            //replacesDictionary.Add("<", " 53 ");
+            //replacesDictionary.Add("<=", " 54 ");
+            //replacesDictionary.Add("{", " 60 ");
+            //replacesDictionary.Add("}", " 61 ");
+            //replacesDictionary.Add("=", " 70 ");
+            //replacesDictionary.Add("+", " 71 ");
+            //replacesDictionary.Add("++", " 72 ");
+            //replacesDictionary.Add("-", " 73 ");
+            //replacesDictionary.Add("--", " 74 ");
+            //replacesDictionary.Add("-=", " 75 ");
+            //replacesDictionary.Add("+=", " 76 ");
+            //replacesDictionary.Add("true", " 80 ");
+            //replacesDictionary.Add("false", " 81 ");
+            //foreach (KeyValuePair<string, string> kvp in replacesDictionary)
+            //{
+            //    replaceText(kvp.Key, kvp.Value);
+            //}
         }
     }
 }

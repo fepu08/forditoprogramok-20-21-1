@@ -25,10 +25,11 @@ namespace forditoprogramok
 
             //SourceHandler SH = new SourceHandler(@"C:\RandomPath\FileToRead.txt", @"C:\RandomPath\FileToWrite.txt");
             // Ezzel a relatív útvonallal a ...valami/forditoprogramok/forditoprogramok/bin/ -be localizalja a fileokat
-            string readPath = "../Source.txt";
-            string writePath = "../FinalCode.txt";
+            string readPath = "./Source.txt";
+            string writePath = "./FinalCode.txt";
+            string dictionaryPath = "./Dictionary.txt";
 
-            SourceHandler SH = new SourceHandler(readPath, writePath);
+            SourceHandler SH = new SourceHandler(readPath, writePath, dictionaryPath);
             SH.openFileToRead();    // Ha nem sikerül neki kiírja a kapott hibaüzenetet a console-ba
             Console.WriteLine(SH.Content);
             SH.Content = "New Content";
