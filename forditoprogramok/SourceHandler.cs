@@ -146,7 +146,7 @@ namespace forditoprogramok
          */
         public void replaceContent()
         {
-            content = content.ToLower();
+            content = content.ToLower(); // for avoid case sensitivity
             //var blockComments = @"/\*(.*?)\*/";
             //var blockComments = @"^/[/|*](.+)$";
             //var lineComments = @"//(.*?)\r?\n";
@@ -160,10 +160,9 @@ namespace forditoprogramok
             content = Regex.Replace(content, patternBlockComment, String.Empty);
             content = Regex.Replace(content, patternLineComment, String.Empty);
             content = Regex.Replace(content, "\r", String.Empty);
-            content = Regex.Replace(content, patternNumber, changeVariablesAndConstants("$1"));
+            content = Regex.Replace(content, patternNumber, changeVariablesAndConstants("$1")); // Ez a $1 es megoldás nem igazán működik
             content = Regex.Replace(content, patternVar, changeVariablesAndConstants("$1"));
-            content = Regex.Replace(content, "{", String.Empty);
-            content = Regex.Replace(content, "}", String.Empty);
+
             foreach (var x in replacesDictionary)
             {
                 while (content.Contains(x.Key))
@@ -171,6 +170,11 @@ namespace forditoprogramok
                     content = content.Replace(x.Key, x.Value);
                 }
             }
+
+            // Ha az első karakter space levágjuk
+            if(content[0] == ' ') { content.Substring(0); }
+            // Előfordult, hogy dupla space lett pl if(..) itt { .. ezért
+            content = Regex.Replace(content, "  ", " ");
         }
 
         /* KIINDULÁS - beolvasása openFileToRead() metódussal

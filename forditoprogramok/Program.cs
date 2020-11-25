@@ -31,11 +31,9 @@ namespace forditoprogramok
 
             SourceHandler SH = new SourceHandler(readPath, writePath, dictionaryPath);
             SH.openFileToRead();    // Ha nem sikerül neki kiírja a kapott hibaüzenetet a console-ba
-            Console.WriteLine(SH.Content);
-            SH.Content = "New Content";
-            Console.WriteLine(SH.Content);
-            SH.openFileToWrite();    // Ha nem sikerül neki kiírja a kapott hibaüzenetet a console-ba
-
+            SH.replaceContent();
+            SH.openFileToWrite();
+            
             var blockComment = "\n\n/* block comment \n" +
                 "alma" +
                 "*/\n" +

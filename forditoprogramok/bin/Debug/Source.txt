@@ -1,4 +1,6 @@
-
-
-
-IF (002 == 001) {002=001}
+/* block comment
+                alma
+               */
+                //line  comment
+                //     line comment
+                IF (a == 2) {b=6}
