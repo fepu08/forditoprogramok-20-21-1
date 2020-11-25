@@ -49,7 +49,6 @@ namespace forditoprogramok
             Console.WriteLine("Eredeti szöveg: " + blockComment);
 
             SH.replaceContent();
-            SH.openFileToWrite();
             Console.WriteLine("Result: " + SH.Content);
 
             Console.ReadKey();

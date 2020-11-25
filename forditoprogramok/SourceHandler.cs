@@ -161,7 +161,8 @@ namespace forditoprogramok
             content = Regex.Replace(content, "\r", String.Empty);
             content = Regex.Replace(content, patternNumber, changeVariablesAndConstants("$1"));
             content = Regex.Replace(content, patternVar, changeVariablesAndConstants("$1"));
-
+            content = Regex.Replace(content, "{", String.Empty);
+            content = Regex.Replace(content, "}", String.Empty);
             foreach (var x in replacesDictionary)
             {
                 while (content.Contains(x.Key))
