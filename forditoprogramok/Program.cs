@@ -1,4 +1,5 @@
-﻿using System;
+﻿using forditoprogramok.finitAutomaton;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,6 +49,13 @@ namespace forditoprogramok
 
             SH.replaceContent();
             Console.WriteLine("Result: " + SH.Content);
+
+
+            Automaton A = new Automaton();
+            A.Input = "+12";
+            A.main();
+            A.Input = "+micimacko";
+            A.main();
 
             Console.ReadKey();
         }

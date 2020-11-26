@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{623BBF8B-B8BC-445B-B708-F2DD45FBF5C0}</ProjectGuid>
+    <ProjectGuid>{00AFEFA2-5921-4473-AD2D-5BA1CF3E2114}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>forditoprogramok</RootNamespace>
-    <AssemblyName>forditoprogramok</AssemblyName>
+    <RootNamespace>finitAutomaton</RootNamespace>
+    <AssemblyName>finitAutomaton</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,16 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Automaton.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SourceHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="note.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
