@@ -8,13 +8,15 @@ namespace forditoprogramok.finitAutomaton
         private string state;
         private string input;
         private static string error = "Error";
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
         public Automaton()
         {
             this.state = "A";
+            prepareDictionary();
         }
 
-        public Automaton(string input)
+        public Automaton(string input) : this()
         {
             this.input = input;
         }
@@ -34,6 +36,15 @@ namespace forditoprogramok.finitAutomaton
             } 
         }
 
+        public void prepareDictionary()
+        {
+            dictionary.Add("A+", "B");
+            dictionary.Add("A-", "B");
+            dictionary.Add("Ad", "C");
+            dictionary.Add("Bd", "C");
+            dictionary.Add("Cd", "C");
+        }
+
         public char convert(char c)
         {
             if (Char.IsDigit(c))
@@ -43,7 +54,8 @@ namespace forditoprogramok.finitAutomaton
             return c;
         }
 
-        public string delta(string str, char act)
+
+        /*public string delta(string str, char act)
         {
             string ex = str + convert(act);
             switch (ex)
@@ -55,6 +67,17 @@ namespace forditoprogramok.finitAutomaton
                 case "Cd": return "C";
                 default: return error;
             }
+        }*/
+
+        public string delta(string str, char act)
+        {
+            string ex = str + convert(act);
+            if (dictionary.ContainsKey(ex))
+            {
+                // ha megtalaljuk vissza adjuk a kulcs altal mutatott value-t
+                return dictionary[ex];
+            }
+            return error;
         }
 
         // automata megvalositasa
@@ -64,7 +87,7 @@ namespace forditoprogramok.finitAutomaton
             while (i < input.Length && state != error)
             {
                 state = delta(state, input[i]);
-                if (state != error) i++; 
+                i++; 
             }
 
             if(state != error)
