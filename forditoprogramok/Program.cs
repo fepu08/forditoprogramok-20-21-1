@@ -52,9 +52,6 @@ namespace forditoprogramok
 
 
             Automaton A = new Automaton();
-            A.Input = "+12";
-            A.main();
-            A.Input = "+micimacko";
             A.main();
 
             Console.ReadKey();
