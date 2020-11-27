@@ -46,7 +46,6 @@ namespace forditoprogramok
             {
                 Console.WriteLine("Hibás kifejezés {0}. Helytelen karakter: {1}", input, input[i]);
                 i++;
-                S();
             }
             // Ha az inkrementálás nem egy else ágon belül van
             // akkor IndexOutOfRangeExceptiont fog dobni (pl "(12*3+123" ebben )
