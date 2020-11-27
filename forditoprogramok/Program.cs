@@ -31,9 +31,9 @@ namespace forditoprogramok
             string dictionaryPath = "./Dictionary.txt";
 
             SourceHandler SH = new SourceHandler(readPath, writePath, dictionaryPath);
-            SH.openFileToRead();    // Ha nem sikerül neki kiírja a kapott hibaüzenetet a console-ba
-            SH.replaceContent();
-            SH.openFileToWrite();
+            SH.OpenFileToRead();    // Ha nem sikerül neki kiírja a kapott hibaüzenetet a console-ba
+            SH.Replace();
+            SH.OpenFileToWrite();
             
             var blockComment = "\n\n/* block comment \n" +
                 "alma" +
@@ -47,12 +47,40 @@ namespace forditoprogramok
             //Szimbólum tábla -> ["a", "20"]
             Console.WriteLine("Eredeti szöveg: " + blockComment);
 
-            SH.replaceContent();
+            SH.Replace();
             Console.WriteLine("Result: " + SH.Content);
 
 
             Automaton A = new Automaton();
-            A.main();
+            A.Main();
+
+            SyntaxAnalyzerAutomat synaut = new SyntaxAnalyzerAutomat("(1+12)*1");
+            synaut.S();
+            synaut = new SyntaxAnalyzerAutomat("1b1"); // így csak egyszer írja ki, hogy b hibás
+            synaut.S();
+            Console.WriteLine();
+
+            synaut = new SyntaxAnalyzerAutomat("(1+1b2)*1+(12+123*c)"); // itt már kétszer írja ki, hogy b hibás
+            synaut.S();
+            Console.WriteLine();
+
+            synaut = new SyntaxAnalyzerAutomat("(123*12+12)*123123");
+            synaut.S();
+            Console.WriteLine();
+
+            synaut = new SyntaxAnalyzerAutomat("12*3)+123");
+            synaut.S();
+            Console.WriteLine();
+
+            synaut = new SyntaxAnalyzerAutomat("(12*3+123");
+            synaut.S();
+            Console.WriteLine();
+
+
+            //FIXME?? Ha hibás több nyitott zárójel van aminek nincs párja, akkor többször írja ki, hogy "helytelen karakter #" 
+            synaut = new SyntaxAnalyzerAutomat("(12*3+(123");
+            synaut.S();
+            Console.WriteLine();
 
             Console.ReadKey();
         }

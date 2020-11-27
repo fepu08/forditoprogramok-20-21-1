@@ -26,8 +26,8 @@ namespace forditoprogramok.finitAutomaton
             this.state = "A";
             this.inputPath = "./automata-source.txt"; //keresse itt, ha nem adjuk meg
             this.inputList = new List<string>();
-            prepareDictionary();
-            readValuesFromInputFile();
+            PrepareDictionary();
+            ReadValuesFromInputFile();
         }
 
         public Automaton(string inputPath) : this()
@@ -46,7 +46,7 @@ namespace forditoprogramok.finitAutomaton
             set 
             {
                 this.inputPath = value;
-                readValuesFromInputFile();
+                ReadValuesFromInputFile();
             } 
         }
 
@@ -71,7 +71,7 @@ namespace forditoprogramok.finitAutomaton
             }
         }
 
-        public bool readValuesFromInputFile()
+        public bool ReadValuesFromInputFile()
         {
             List<String> temp = new List<string>();
             try
@@ -97,7 +97,7 @@ namespace forditoprogramok.finitAutomaton
             return true;
         }
 
-        public void prepareDictionary()
+        public void PrepareDictionary()
         {
             dictionary.Add("A+", "B");
             dictionary.Add("A-", "B");
@@ -106,7 +106,7 @@ namespace forditoprogramok.finitAutomaton
             dictionary.Add("Cd", "C");
         }
 
-        public char convert(char c)
+        public char Convert(char c)
         {
             if (Char.IsDigit(c))
             {
@@ -115,7 +115,7 @@ namespace forditoprogramok.finitAutomaton
             return c;
         }
 
-        public void resetState()
+        public void ResetState()
         {
             this.state = "A";
         }
@@ -134,9 +134,9 @@ namespace forditoprogramok.finitAutomaton
             }
         }*/
 
-        public string delta(string str, char act)
+        public string Delta(string str, char act)
         {
-            string ex = str + convert(act);
+            string ex = str + Convert(act);
             if (dictionary.ContainsKey(ex))
             {
                 // ha megtalaljuk vissza adjuk a kulcs altal mutatott value-t
@@ -146,7 +146,7 @@ namespace forditoprogramok.finitAutomaton
         }
 
         // automata megvalositasa
-        public void main()
+        public void Main()
         {
             /*int i = 0;
             while (i < inputPath.Length && state != error)
@@ -167,11 +167,11 @@ namespace forditoprogramok.finitAutomaton
 
             foreach (string value in inputList)
             {
-                resetState();
+                ResetState();
                 int i = 0;
                 while (i < value.Length && state != error)
                 {
-                    state = delta(state, value[i]);
+                    state = Delta(state, value[i]);
                     i++;
                 }
 
