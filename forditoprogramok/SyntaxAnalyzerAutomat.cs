@@ -17,7 +17,9 @@ namespace forditoprogramok
             this.i = 0;
             Console.WriteLine("Eredeti input: " + input);
             this.input = $"{Simple(input)}#";
+            Console.BackgroundColor = ConsoleColor.Blue;
             Console.WriteLine("Az egyszerűsített input: " + this.input);
+            Console.ResetColor();
         }
 
         public string Input
@@ -40,12 +42,13 @@ namespace forditoprogramok
             return Regex.Replace(input, "[0-9]+", "i");
         }
 
-        private void Elfogad(char ch)
+        private void Elfogad(char actual)
         {
-            if (input[i] != ch)
+            if (input[i] != actual)
             {
+                Console.BackgroundColor = ConsoleColor.Red;
                 Console.WriteLine("Hibás kifejezés {0}. Helytelen karakter: {1}", input, input[i]);
-                i++;
+                Console.ResetColor();
             }
             // Ha az inkrementálás nem egy else ágon belül van
             // akkor IndexOutOfRangeExceptiont fog dobni (pl "(12*3+123" ebben )
@@ -57,7 +60,9 @@ namespace forditoprogramok
         {
             E();
             Elfogad('#');
+            Console.BackgroundColor = ConsoleColor.Green;
             Console.WriteLine("Az elemzés lefutott");
+            Console.ResetColor();
         }
 
         private void E()

@@ -54,8 +54,11 @@ namespace forditoprogramok
             Automaton A = new Automaton();
             A.Main();
 
+            Console.WriteLine();
             SyntaxAnalyzerAutomat synaut = new SyntaxAnalyzerAutomat("(1+12)*1");
             synaut.S();
+            Console.WriteLine();
+
             synaut = new SyntaxAnalyzerAutomat("1b1"); // így csak egyszer írja ki, hogy b hibás
             synaut.S();
             Console.WriteLine();
