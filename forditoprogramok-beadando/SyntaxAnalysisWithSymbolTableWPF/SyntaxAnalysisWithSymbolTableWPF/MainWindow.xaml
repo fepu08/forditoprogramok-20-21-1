@@ -10,8 +10,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="150"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -26,6 +25,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="Original Input" Margin="10"/>
@@ -37,14 +37,14 @@
             <TextBox x:Name="input_converted_tb" Grid.Row="1"  Grid.Column="1" Margin="10" TextWrapping="Wrap" Text=""/>
             <Button x:Name="converted_button" Grid.Row="1"  Grid.Column="2" Margin="10" Content="OK" Click="converted_button_Click"/>
 
-
+            <Label Grid.Row="2" Grid.Column="0" Content="Sheet" Margin="10"/>
+            <ComboBox x:Name="sheetCbox" Grid.Row="2" Grid.Column="1" Margin="10" SelectionChanged="sheetCbox_SelectionChanged"/>
+            <Button x:Name="open_file_btn" Content="Open" Grid.Row="3" Grid.Column="2" Margin="10" Click="read_file_button_Click"/>
+            
         </Grid>
 
-        <Button x:Name="add_row_button" Content="Add Row" Grid.Row="2" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Height="30" Click="AddRowButton_Click"/>
-        <Button x:Name="add_column_button" Content="Add Column" Grid.Row="2" Margin="0,0,120,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" Height="30" Click="AddColumnButton_Click"/>
 
-        <DataGrid x:Name="symbol_table_data_grid" Grid.Row="3" Margin="10"/>
-
+        <DataGrid x:Name="symbol_table_data_grid" Grid.Row="3" Margin="10" IsReadOnly="True" ItemsSource="{Binding}"/>
 
     </Grid>
 </Window>
