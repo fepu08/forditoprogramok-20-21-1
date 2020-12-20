@@ -1,6 +1,5 @@
 You can open an Excel workbook with *.xlsx or *.xls extensions
 
-Add 
+Add NuGet packages to C# project and rebuild it!
   - ExcelDataReader
-  - ExcelDataReader.DataSet 
-NuGet package to C# project and rebuild it!
+  - ExcelDataReader.DataSet
