@@ -13,34 +13,66 @@ namespace SyntaxAnalysisWithSymbolTableWPF
         private string original;
         private string converted;
         private int i;
-        private Stack<string> stack;
+        private Stack<string> methods;
+        private List<string> steps;
 
 
         public string Original
         {
             get { return original; }
-            set { original = value; }
+            set 
+            { 
+                original = value;
+                this.converted = Simple(original);
+                if (this.converted.Substring(  this.converted.Length - 1) != "#") { this.converted += "#"; }
+            }
         }
 
         public string Converted 
         {
             get { return converted; }
-            set { converted = value; }
+            set 
+            {
+                converted = value;
+                if(converted.Substring(converted.Length - 1) != "#") converted += "#";
+            }
         }
 
-        public Stack<string> Stack 
+        public Stack<string> Methods
         {
-            get { return stack; }
-            set { stack = value; }
+            get
+            {
+                return new Stack<string>(new Stack<string>(methods));
+            }
+            set
+            {
+                this.methods = value;
+            }
         }
 
-        public SyntaxAnalyzerAutomat(string original)
+        public List<string> Steps { get; set; }
+
+        public SyntaxAnalyzerAutomat()
+        {
+            this.i = 0;
+            this.original = "";
+            this.converted = "";
+            this.methods = new Stack<string>();
+            methods.Push("E");
+            this.steps = new List<string>();
+        }
+
+        public SyntaxAnalyzerAutomat(string original) : this()
         {
             this.i = 0;
             this.original = original;
-            this.converted = $"{Simple(original)}#";
-            this.stack = new Stack<string>();
-            stack.Push("E");
+            this.converted = Simple(original);
+            if(this.converted.Substring(this.converted.Length - 1) != "#") { this.converted += "#"; }
+        }
+
+        public string GetSolution()
+        {
+            return String.Format("({0}, {1}, {2})", converted, MethodsToString(), stepsToString());
         }
 
         public string Simple(string input)
@@ -49,9 +81,25 @@ namespace SyntaxAnalysisWithSymbolTableWPF
             return Regex.Replace(input, "[0-9]+", "i");
         }
 
-        public void automaton()
+        private string stepsToString()
         {
-
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < steps.Count; i++)
+            {
+                sb.Append(steps[i]);
+            }
+            return sb.ToString();
         }
+
+        private string MethodsToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string method in methods)
+            {
+                sb.Append(method.ToString());
+            }
+            return sb.ToString();
+        }
+
     }
 }

@@ -43,14 +43,16 @@
 
             <Label Grid.Row="2" Grid.Column="0" Content="Path" Margin="10"/>
             <TextBox x:Name="filepath_tb" Grid.Row="2"  Grid.Column="1" Margin="10" TextWrapping="Wrap" Text="" IsReadOnly="True"/>
-            <Button x:Name="open_file_btn" Content="Open" Grid.Row="3" Grid.Column="2" Margin="10" Click="read_file_button_Click"/>
+            <Button x:Name="open_file_btn" Content="Browse" Grid.Row="3" Grid.Column="2" Margin="10" Click="read_file_button_Click"/>
         </Grid>
 
         <DataGrid x:Name="symbol_table_data_grid" Grid.Row="3" Margin="10" IsReadOnly="True" AutoGenerateColumns="True" ItemsSource="{Binding}"/>
 
         <Label Content="Solving The Problem Step by Step" Grid.Column="1" Grid.Row="0" Margin="10" />
 
-        <TextBlock x:Name="textBlock_Solve" Grid.Column="1" Grid.RowSpan="2" Margin="10" TextWrapping="Wrap" Grid.Row="1"/>
+        <TextBlock x:Name="textBlock_Solve" Grid.Column="1" Grid.RowSpan="2" Margin="10" TextWrapping="Wrap" Grid.Row="1"></TextBlock>
+        <ListBox x:Name="listView_solution" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="10"/>
+
 
     </Grid>
 </Window>

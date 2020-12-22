@@ -25,7 +25,7 @@ namespace SyntaxAnalysisWithSymbolTableWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        SyntaxAnalyzerAutomat automat;
+        private SyntaxAnalyzerAutomat automat;
         private static char csvSeparator = ';';
         private DataSet result;
         private string[][] table;
@@ -33,15 +33,16 @@ namespace SyntaxAnalysisWithSymbolTableWPF
         public MainWindow()
         {
             InitializeComponent();
+            automat = new SyntaxAnalyzerAutomat();
         }
 
         private void original_button_Click(object sender, RoutedEventArgs e)
         {
             string original = input_original_tb.Text;
-            automat = new SyntaxAnalyzerAutomat(original);
+            automat.Original = original;
             input_converted_tb.Text = automat.Converted;
+            ReInitListViewItemsWithSolutions();
             changeMessagesLabelContent("Input read and converted successfully", AlertType.SUCCESS);
-
         }
 
         private void converted_button_Click(object sender, RoutedEventArgs e)
@@ -49,13 +50,14 @@ namespace SyntaxAnalysisWithSymbolTableWPF
             string converted = input_converted_tb.Text;
             input_original_tb.Clear();
             automat.Converted = converted;
+            ReInitListViewItemsWithSolutions();
             changeMessagesLabelContent("Converted text changed successfully", AlertType.SUCCESS);
         }
 
         private void read_file_button_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog() { Filter = "Excel Workbook|*.csv", ValidateNames = true };
-            if (ofd.ShowDialog() == true)
+            if (ofd.ShowDialog() == true && ofd.FileName != null)
             {
                 path = ofd.FileName;
                 symbol_table_data_grid.ItemsSource = CreateDataSource(path);
@@ -64,8 +66,8 @@ namespace SyntaxAnalysisWithSymbolTableWPF
 
                 if (messages_label.Content.Equals("CSV file read successfully")) changeMessagesLabelContent("CSV file changed successfully", AlertType.SUCCESS);
                 else changeMessagesLabelContent("CSV file read successfully", AlertType.SUCCESS);
+                table = readTable(path);
             }
-            table = readTable(path);
 
             // EXCEL STUFF
             /*
@@ -176,6 +178,22 @@ namespace SyntaxAnalysisWithSymbolTableWPF
 
             var data = lines.ToArray();
             return data;
+        }
+
+        private void WriteSolutionToListView(string solution)
+        {
+            listView_solution.Items.Add(solution);
+        }
+
+        private void ClearListView()
+        {
+            listView_solution.Items.Clear();
+        }
+
+        private void ReInitListViewItemsWithSolutions()
+        {
+            ClearListView();
+            WriteSolutionToListView(automat.GetSolution());
         }
     }
 }
