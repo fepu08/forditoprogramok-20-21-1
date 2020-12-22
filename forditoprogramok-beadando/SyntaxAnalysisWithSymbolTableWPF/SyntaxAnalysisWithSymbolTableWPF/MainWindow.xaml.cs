@@ -28,30 +28,39 @@ namespace SyntaxAnalysisWithSymbolTableWPF
         private SyntaxAnalyzerAutomat automat;
         private static char csvSeparator = ';';
         private DataSet result;
-        private string[][] table;
         private string path;
+        private bool solved = false;
         public MainWindow()
         {
             InitializeComponent();
-            automat = new SyntaxAnalyzerAutomat();
         }
 
         private void original_button_Click(object sender, RoutedEventArgs e)
         {
-            string original = input_original_tb.Text;
-            automat.Original = original;
-            input_converted_tb.Text = automat.Converted;
-            ReInitListViewItemsWithSolutions();
-            changeMessagesLabelContent("Input read and converted successfully", AlertType.SUCCESS);
+            if (!input_original_tb.Text.Equals(""))
+            {
+                string original = input_original_tb.Text;
+                automat = new SyntaxAnalyzerAutomat(original);
+                solved = false;
+                input_converted_tb.Text = automat.Converted;
+                ReInitListViewItemsWithSolutions();
+                ChangeMessagesLabelContent("Input read and converted successfully", AlertType.SUCCESS);
+            }
+            else WarningInsertInput();
         }
 
         private void converted_button_Click(object sender, RoutedEventArgs e)
         {
-            string converted = input_converted_tb.Text;
-            input_original_tb.Clear();
-            automat.Converted = converted;
-            ReInitListViewItemsWithSolutions();
-            changeMessagesLabelContent("Converted text changed successfully", AlertType.SUCCESS);
+            if (!input_converted_tb.Text.Equals(""))
+            {
+                string converted = input_converted_tb.Text;
+                input_original_tb.Clear();
+                automat = new SyntaxAnalyzerAutomat(converted);
+                solved = false;
+                ReInitListViewItemsWithSolutions();
+                ChangeMessagesLabelContent("Converted text changed successfully", AlertType.SUCCESS);
+            }
+            else WarningInsertInput();
         }
 
         private void read_file_button_Click(object sender, RoutedEventArgs e)
@@ -61,12 +70,12 @@ namespace SyntaxAnalysisWithSymbolTableWPF
             {
                 path = ofd.FileName;
                 symbol_table_data_grid.ItemsSource = CreateDataSource(path);
-                disableDataGridColumnsSorting(symbol_table_data_grid);
+                DisableDataGridColumnsSorting(symbol_table_data_grid);
                 filepath_tb.Text = path;
 
-                if (messages_label.Content.Equals("CSV file read successfully")) changeMessagesLabelContent("CSV file changed successfully", AlertType.SUCCESS);
-                else changeMessagesLabelContent("CSV file read successfully", AlertType.SUCCESS);
-                table = readTable(path);
+                if (messages_label.Content.Equals("CSV file read successfully")) ChangeMessagesLabelContent("CSV file changed successfully", AlertType.SUCCESS);
+                else ChangeMessagesLabelContent("CSV file read successfully", AlertType.SUCCESS);
+                EndSelectFileWarning();
             }
 
             // EXCEL STUFF
@@ -102,7 +111,7 @@ namespace SyntaxAnalysisWithSymbolTableWPF
         }
         */
 
-        private void disableDataGridColumnsSorting(DataGrid dataGridId)
+        private void DisableDataGridColumnsSorting(DataGrid dataGridId)
         {
             foreach (DataGridColumn column in dataGridId.Columns)
             {
@@ -110,7 +119,7 @@ namespace SyntaxAnalysisWithSymbolTableWPF
             }
         }
 
-        private void changeMessagesLabelContent(string message, AlertType alertType = AlertType.DEFAULT)
+        private void ChangeMessagesLabelContent(string message, AlertType alertType = AlertType.DEFAULT)
         {
             if (alertType == AlertType.DEFAULT)
             {
@@ -163,26 +172,17 @@ namespace SyntaxAnalysisWithSymbolTableWPF
             return new DataView(dt);
         }
 
-        private string[][] readTable(String path)
-        {
-            StreamReader sr = new StreamReader(path);
-            var lines = new List<string[]>();
-            int Row = 0;
-            while (!sr.EndOfStream)
-            {
-                string[] Line = sr.ReadLine().Split(',');
-                lines.Add(Line);
-                Row++;
-                Console.WriteLine(Row);
-            }
-
-            var data = lines.ToArray();
-            return data;
-        }
-
         private void WriteSolutionToListView(string solution)
         {
             listView_solution.Items.Add(solution);
+        }
+
+        private void WriteAllSolutionsToListView()
+        {
+            for (int i = 0; i < automat.SolutionSteps.Count; i++)
+            {
+                listView_solution.Items.Add(automat.SolutionSteps[i]);
+            }
         }
 
         private void ClearListView()
@@ -194,6 +194,54 @@ namespace SyntaxAnalysisWithSymbolTableWPF
         {
             ClearListView();
             WriteSolutionToListView(automat.GetSolution());
+        }
+
+        private void StartSolve(object sender, RoutedEventArgs e)
+        {
+            if (!solved)
+            {
+                if (automat == null || automat.Converted.Length < 1) { WarningInsertInput(); }
+                else if (path == null) { WarningSelectFile(); }
+                else
+                {
+                    automat.ReadTable(path, csvSeparator);
+                    bool resultSuccess = automat.Solve();
+                    if (resultSuccess) { ChangeMessagesLabelContent("Correct Input", AlertType.SUCCESS); }
+                    else { ChangeMessagesLabelContent("Incorrect Input", AlertType.DANGER); }
+                    WriteAllSolutionsToListView();
+                    solved = true;
+                }
+            }
+        }
+
+        private void WarningInsertInput()
+        {
+            input_original_tb.BorderBrush = Brushes.Red;
+            input_original_tb.BorderThickness = new Thickness(2);
+            input_converted_tb.BorderBrush = Brushes.Red;
+            input_converted_tb.BorderThickness = new Thickness(2);
+            ChangeMessagesLabelContent("Please insert input", AlertType.DANGER);
+        }
+
+        private void EndInsertInputWarning(object sender, KeyEventArgs e)
+        {
+            input_original_tb.ClearValue(TextBox.BorderBrushProperty);
+            input_original_tb.BorderThickness = new Thickness(1);
+            input_converted_tb.ClearValue(TextBox.BorderBrushProperty);
+            input_converted_tb.BorderThickness = new Thickness(1);
+        }
+
+        private void WarningSelectFile()
+        {
+            ChangeMessagesLabelContent("Please select csv file", AlertType.DANGER);
+            open_file_btn.BorderBrush = Brushes.Red;
+            open_file_btn.BorderThickness = new Thickness(2);
+        }
+
+        private void EndSelectFileWarning()
+        {
+            open_file_btn.ClearValue(Button.BorderBrushProperty);
+            open_file_btn.BorderThickness = new Thickness(1);
         }
     }
 }
